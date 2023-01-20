@@ -1,23 +1,50 @@
-import logo from './logo.svg';
-import './App.css';
+import React, { useState } from 'react';
+
+function ToDoList() {
+  const [todos, setTodos] = useState([]);
+  const [newTodo, setNewTodo] = useState('');  // new state variable
+
+  const addTodo = (e) => {
+    e.preventDefault();
+    if (!newTodo) {
+      return;
+    }
+    setTodos([...todos, newTodo]);
+    setNewTodo('');
+  };
+
+  const removeTodo = (index) => {
+    const newTodos = todos.filter((todo, i) => i !== index);
+    setTodos(newTodos);
+  }
+
+  const renderTodos = () => {
+    return todos.map((todo, i) => (
+      <li key={i}>
+        {todo}
+        <button onClick={() => removeTodo(i)}>Remove</button>
+      </li>
+    ));
+  }
+
+  return (
+    <div>
+      <ul>
+        {renderTodos()}
+      </ul>
+      <form>
+        <input type="text" placeholder="Add Task" onChange={e => setNewTodo(e.target.value)} value={newTodo} />
+        <button onClick={addTodo}>Add</button>
+      </form>
+    </div>
+  );
+}
 
 function App() {
   return (
     <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+      <ToDoList />
+      {/* <Time /> */}
     </div>
   );
 }
